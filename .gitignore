@@ -158,3 +158,41 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+# Project specific
+# Data directories
+data/raw/*
+data/temp/*
+data/processed/*
+!data/raw/.gitkeep
+!data/temp/.gitkeep
+!data/processed/.gitkeep
+
+# Path configuration files (machine-specific)
+**/paths.yml
+
+# Logs
+logs/
+*.log
+
+# OneDrive sync files
+.~lock.*
+~$*
+*.tmp
+desktop.ini
+.DS_Store
+Thumbs.db
+.directory
+Icon?
+.Trashes
+._*
+
+# OneDrive temporary files
+~*.tmp
+*.lnk
+
+# R specific
+.Rhistory
+.RData
+.Rproj.user
+*.Rproj

@@ -9,6 +9,8 @@
 ### Data Acquisition Process
 
 ### Data Quality Assessment
+#### Cosas a tener en cuenta:
+1. Los datos de violencia solo tienen valores cuando ocurre un hecho, por lo que es necesario basarse en una tabla de tiempo que incluya trimestres y años para poder inputar los campos que no tienen valor.
 
 ## Data Preprocessing
 

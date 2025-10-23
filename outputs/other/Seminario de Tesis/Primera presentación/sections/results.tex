@@ -1,0 +1,17 @@
+\begin{table}[H]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+ & \textbf{Logit} & \textbf{Lasso} & \textbf{Elastic Net} & \textbf{Random Forests} \\
+\midrule
+\% Acierto      & 0.720374 & 0.720309 & 0.720296 & 0.853565 \\
+Sensibilidad    & 0.743353 & 0.743425 & 0.743425 & 0.603754 \\
+Especificidad   & 0.707203 & 0.707058 & 0.707038 & 0.996758 \\
+AUC             & 0.811302 & 0.811277 & 0.811276 & 0.897908 \\
+Relación FP/TP  & 0.687167 & 0.687439 & 0.687488 & 0.009368 \\
+Relación FN/TP  & 0.345255 & 0.345125 & 0.345125 & 0.656304 \\
+\bottomrule
+\end{tabular}
+\caption{Comparación de modelos: métricas de desempeño}
+\label{tab:model_comparison}
+\end{table}

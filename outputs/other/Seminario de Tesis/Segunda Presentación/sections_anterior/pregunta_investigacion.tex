@@ -1,0 +1,90 @@
+
+\makesection{Pregunta de Investigación}
+
+\begin{frame}{}
+    \vspace{3cm}
+    \centering
+    \Large ¿El uso de Machine Learning para pronosticar \hyperlink{violenciaatipica}{\alert{violencia atípica}} mejorará la
+    \alert{precisión y sensibilidad} del pronóstico en comparación con las alertas tempranas de la Defensoría? 
+
+\end{frame}
+
+\begin{frame}{¿Qué entendemos por Violencia Atípica?}
+     Criterio basado en \alert{desviación estándar}: Bazzi et al.(2022):
+        \begin{block}{Definición}
+        La \textbf{violencia atípica} se define como aquella que supera el umbral de 
+        \textbf{1 desviación estándar} del promedio de los últimos \textbf{3 años}.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Problema de Clasificación Binaria}
+    \begin{itemize}
+        \item \textbf{Decisión operativa}: Atípico (1) vs No atípico (0)
+        \begin{itemize}
+            \item Más eficiente que predicción continua para el SAT
+        \end{itemize}
+        
+        \item \alert{Ventajas clave}:
+        \begin{itemize}
+            \item Manejo de desbalance:
+            \begin{itemize}
+                \item Reponderación de clases
+                \item Sobremuestreo controlado
+            \end{itemize}
+            
+            \item Optimización de umbrales: Ajuste para maximizar F1-Score
+        \end{itemize}
+        
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Métricas}
+    \begin{columns}[T]
+        % Columna izquierda (texto)
+        \begin{column}{0.6\textwidth}
+            \begin{itemize}
+            \pause
+                \item \textbf{Precisión}:
+                \begin{itemize}
+                    \item "No mover recursos innecesariamente"
+                    \item Minimiza la cantidad de veces que pronostíco violencia atípica y no ocurre
+                    \item \alert{Costo de fallar}: Desgaste institucional + gasto inútil
+                \end{itemize}
+                \pause
+                \item \textbf{Sensibilidad}:
+                \begin{itemize}
+                    \item "No dejar pasar ningún evento crítico"
+                    \item Minimiza la cantidad de veces que no pronostíco violencia atípica y ocurre
+                    \item \alert{Costo de fallar}: Pérdida de vidas + crisis humanitaria
+                \end{itemize}
+                \pause
+                \item \textbf{F1-Score}:
+                \begin{itemize}
+                    \item Balance entre eficiencia y protección
+                \end{itemize}
+            \end{itemize}
+        \end{column}
+        \pause
+        % Columna derecha (ecuaciones)
+        \begin{column}{0.4\textwidth}
+            \centering
+
+            \textbf{Precisión}
+            \begin{align*}
+                P = \frac{\text{VP}}{\text{VP} + \text{FP}}
+            \end{align*}
+
+            
+            \textbf{Sensibilidad}
+            \begin{align*}
+                S = \frac{\text{VP}}{\text{VP} + \text{FN}}
+            \end{align*}
+
+            
+            \textbf{F1-Score}
+            \begin{align*}
+                F1 = 2 \times \frac{P \times S}{P + S}
+            \end{align*}
+        \end{column}
+    \end{columns}
+\end{frame}

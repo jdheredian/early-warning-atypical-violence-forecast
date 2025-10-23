@@ -1,0 +1,69 @@
+\subsection*{Machine Learning}
+El enfoque metodológico utilizado en este estudio se basa en la estimación de una función de probabilidad \( y = f(X) \), dado que el problema es de {clasificación binaria}. En este contexto, la variable objetivo \( y \) toma el valor de \(1\) cuando el Índice Agregado de Violencia (IACV) en el trimestre \( t \) supera el umbral de violencia atípica, previamente determinado a partir del comportamiento del IACV en el último año. En caso contrario, \( y \) toma el valor de \(0\), indicando que la violencia se encuentra dentro de los rangos normales.
+
+Las variables explicativas \( X \) incluyen factores estructurales identificados en la literatura sobre las causas de la violencia, además de rezagos del IACV, IAGC e IA en trimestres previos. Esto permite capturar {dinámicas temporales} y patrones relevantes en la ocurrencia de eventos atípicos, facilitando que el modelo aprenda de la evolución histórica de la violencia y de factores contextuales clave.
+
+Para abordar este problema, se utilizarán cuatro metodologías de {aprendizaje automático}, cada una con características específicas para modelar la probabilidad de ocurrencia de violencia atípica. Este trabajo se basa en las metodologías de \citet{Bazzi2022} para predecir la violencia con machine learning, pero busca mejorarla usando modelos más avanzados a los utilizados para hacer estimaciones más precisasa.
+
+\subsubsection*{Modelos}
+
+
+Elastic Net es un método de regularización dentro del marco de {regresión logística}, desarrollado por \citet{ZouHastie2005}. Combina los penalizadores {Lasso (L1)} y {Ridge (L2)}, permitiendo la selección de variables relevantes y reduciendo la multicolinealidad en los datos. 
+
+Los modelos de rtegresión lineal mejoran la interpretabilidad del modelo. Así, Elastic Net simplifica la selección de variables sin comprometer la precisión de las predicciones. Además, es útil para datos con alta dimensionalidad, evitando el sobreajuste mediante la regularización de los coeficientes. Sin embargo, su principal limitación es que sólo captura relaciones lineales entre las variables, lo que podría afectar su desempeño en la predicción de eventos atípicos si existen interacciones no lineales complejas. También requiere una adecuada calibración de sus hiperparámetros, lo que aumenta el costo computacional del entrenamiento.
+
+
+Random Forest, propuesto por \citet{Breiman2001}, es un modelo basado en la combinación de múltiples {árboles de decisión}, lo que mejora la robustez y precisión del modelo en comparación con un árbol único.
+
+Así, es capaz de manejar datos con relaciones no lineales y capturar interacciones complejas entre variables. Además, es resistente al ruido y a la presencia de valores faltantes. Sin embargo, su desventaja principal es la falta de interpretabilidad, ya que la combinación de múltiples árboles dificulta la explicación del proceso de toma de decisiones del modelo. Además, puede ser computacionalmente costoso en grandes volúmenes de datos.
+
+
+XGBoost ({Extreme Gradient Boosting}), desarrollado por \citet{ChenGuestrin2016}, es una versión optimizada de los algoritmos de {boosting}, que ajusta secuencialmente árboles de decisión, corrigiendo errores en cada iteración.
+
+Este modelo se destaca por su alta precisión predictiva, ya que su estructura de boosting permite que el modelo aprenda de los errores cometidos en iteraciones previas. Además, incorpora regularización para evitar sobreajuste y maneja grandes volúmenes de datos con eficiencia computacional. Sin embargo, su principal desventaja es la necesidad de ajustar sus hiperparámetros con precisión para evitar problemas de sobreajuste o subajuste, lo que puede hacer su implementación más compleja.
+
+
+LSTM, desarrollado por \citet{HochreiterSchmidhuber1997}, es una arquitectura de {red neuronal recurrente (RNN)} diseñada para capturar dependencias a largo plazo en datos secuenciales.
+
+La ventaja principal de LSTM es su capacidad de recordar patrones en series temporales y capturar la influencia de eventos previos en la violencia atípica. Esto permite modelar tendencias y anticipar cambios abruptos en los niveles de violencia. Sin embargo, su implementación requiere grandes volúmenes de datos para entrenar modelos robustos, lo que puede ser una limitación con la muestra de datos obtenida. Además, los modelos LSTM suelen ser más complejos y computacionalmente exigentes.
+
+\subsubsection*{Comparación de Modelos y Evaluación de Desempeño}
+
+En el campo del {aprendizaje automático}, es común comparar múltiples modelos para seleccionar el más adecuado según el problema específico. Cada metodología mencionada tiene fortalezas y debilidades, por lo que su desempeño se evaluará utilizando métricas estándar como {precisión, sensibilidad y F1-Score}.
+
+Para evaluar el desempeño de los modelos en este estudio, se emplearán tres métricas clave: precisión, sensibilidad y F1-Score.
+\\\\
+\textbf{Precisión: Fiabilidad en la Identificación de Eventos Atípicos}
+\\\\
+La precisión mide qué proporción de las predicciones positivas realmente corresponden a eventos violentos atípicos. Matemáticamente, se expresa como:
+
+\begin{equation}
+\text{Precisión} = \frac{\text{Verdaderos Positivos}}{\text{Verdaderos Positivos} + \text{Falsos Positivos}}
+\end{equation}
+
+Desde una perspectiva operativa, una alta precisión significa que el modelo comete pocos errores al identificar eventos atípicos, minimizando el número de falsas alarmas. Esto es fundamental para evitar la sobrecarga de recursos de seguridad, asegurando que los esfuerzos preventivos se concentren en situaciones de riesgo real.
+\\\\
+\textbf{Sensibilidad: Capacidad de Detectar Eventos Atípicos Reales}
+\\\\
+La sensibilidad, por otro lado, mide qué proporción de los eventos atípicos reales son correctamente detectados por el modelo. Se define como:
+
+\begin{equation}
+\text{Sensibilidad} = \frac{\text{Verdaderos Positivos}}{\text{Verdaderos Positivos} + \text{Falsos Negativos}}
+\end{equation}
+
+Una alta sensibilidad es prioritaria en contextos donde el costo de no identificar un evento crítico es mayor que el de generar una falsa alarma. En el caso de la violencia, no detectar un evento atípico a tiempo puede traducirse en pérdida de vidas humanas y en la incapacidad del sistema de alertas para reaccionar adecuadamente ante situaciones de emergencia.
+\\\\
+\textbf{F1-Score: Equilibrio entre Precisión y Sensibilidad}
+\\\\
+Dado que existe una disyuntiva entre precisión y sensibilidad, se empleará el F1-Score como métrica de referencia para evaluar el desempeño global del modelo. El F1-Score es la media armónica entre precisión y sensibilidad, proporcionando un balance entre ambos aspectos. Su fórmula es la siguiente:
+
+\begin{equation}
+F1 = 2 \times \frac{\text{Precisión} \times \text{Sensibilidad}}{\text{Precisión} + \text{Sensibilidad}}
+\end{equation}
+
+Un F1-Score alto indica que el modelo es capaz de detectar la mayoría de los eventos violentos atípicos sin generar un número excesivo de falsas alarmas. En el contexto del presente estudio, esta métrica es clave, ya que permite evaluar si el uso de Machine Learning mejora la capacidad predictiva respecto a los métodos tradicionales de alertas tempranas.
+
+Además, el uso del F1-Score ayuda a equilibrar dos aspectos fundamentales: la eficiencia en la asignación de recursos y la necesidad de priorizar la protección de la población ante posibles episodios de violencia extrema.
+
+
+Finalmente, los resultados obtenidos con los modelos de machine learning se compararán con las {estimaciones del Sistema de Alertas Tempranas (SAT)} de la Defensoría del Pueblo. Esta comparación permitirá determinar en qué medida estas técnicas pueden complementar y mejorar la identificación de eventos atípicos de violencia, optimizando la detección de patrones y reduciendo la incertidumbre en la toma de decisiones.

@@ -1,0 +1,132 @@
+
+\makesection{Metodología}
+
+\begin{frame}{Modelo Teórico: Clasificación Binaria}
+
+    \begin{itemize}
+        \item \alert{Aprendizaje Supervisado}: \textbf{Clasificación Binaria}
+        $$y = f(X)$$
+        \pause
+        \item \textbf{Función de probabilidad}:
+        \[
+        y_t = \begin{cases} 
+            1 & \text{si } \text{IACV}_t \geq \bar{X} + \sigma \text{ (atípico)} \\
+            0 & \text{si } \text{IACV}_t < \bar{X} + \sigma \text{ (normal)}
+        \end{cases}
+        \]
+        \end{itemize}
+\end{frame}
+
+
+
+
+
+\begin{frame}{Estimación}
+    \begin{alertblock}{Objetivo}
+        Estimar \( P(y=1|X) \) para activar alertas tempranas con \( \uparrow \) precisión y \( \uparrow \) sensibilidad
+    \end{alertblock}
+    \pause
+    \begin{itemize}
+        \item \textbf{Variables explicativas \( X \)}:
+        \pause
+        \begin{itemize}
+            \item \alert{Factores estructurales}:
+            \begin{itemize}
+                \footnotesize
+                \item Desigualdad, presencia estatal, economías ilegales, empleo, presencia grupos armados, educación, ubicación, etc.
+            \end{itemize}
+            \pause
+            \item \alert{Rezagos temporales de violencia}:
+            \begin{itemize}
+                \footnotesize
+                \item IACV, IGC e IA
+            \end{itemize}
+        
+        \end{itemize}
+        \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}{Enfoques de Machine Learning: Elastic Net y Random Forest}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{alertblock}{1. Elastic Net}
+                \begin{itemize}
+                    
+                    \item \textbf{Qué hace}: 
+                    \begin{itemize}
+                        
+                        \item Regresión lineal con penalización combinada L1 (Lasso) y L2 (Ridge)
+                    \end{itemize}
+                    \item \textbf{Ventaja}: 
+                    \begin{itemize}
+                        
+                        \item Selección automática de variables y reducción de sobreajuste
+                    \end{itemize}
+                \end{itemize}
+            \end{alertblock}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{alertblock}{2. Random Forest}
+                \begin{itemize}
+                    
+                    \item \textbf{Qué hace}: 
+                    \begin{itemize}
+                        
+                        \item Ensamble de múltiples árboles de decisión
+                    \end{itemize}
+                    \item \textbf{Ventaja}: 
+                    \begin{itemize}
+                        
+                        \item Maneja alta dimensionalidad y reduce el sobreajuste
+                    \end{itemize}
+                \end{itemize}
+            \end{alertblock}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Enfoques de Machine Learning: XGBoost y LSTM}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{alertblock}{3. XGBoost}
+                \begin{itemize}
+                    
+                    \item \textbf{Qué hace}: 
+                    \begin{itemize}
+                        
+                        \item Boosting con n iteraciones + regularización
+                    \end{itemize}
+                    \item \textbf{Ventaja}: 
+                    \begin{itemize}
+                        \item Similar a Random Forest
+                        \item Eficiencia con datos desbalanceados
+                        \item Tratamiento de valores nulos
+                    \end{itemize}
+                \end{itemize}
+            \end{alertblock}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{alertblock}{4. Redes LSTM}
+                \begin{itemize}
+                    
+                    \item \textbf{Qué hace}: 
+                    \begin{itemize}
+                        
+                        \item Modela dinámicas temporales de forma más efectiva que métodos tradicionales
+                    \end{itemize}
+                    \item \textbf{Ventaja}: 
+                    \begin{itemize}
+                        
+                        \item Detecta patrones temporales críticos 
+                    \end{itemize}
+                \end{itemize}
+            \end{alertblock}
+        \end{column}
+    \end{columns}
+
+\end{frame}

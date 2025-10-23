@@ -1,0 +1,65 @@
+Los estudios que buscan anticipar la violencia ligada al conflicto armado siguen dos caminos. El primero se centra la persistencia de la violencia donde ya existe, mientras el segundo intenta prever eventos atípicos. Este trabajo pertenece a la segunda línea y se relaciona con varias investigaciones recientes.
+\\\\
+Los primeros esquemas estadísticos, como el Political Instability Task Force, usaron regresiones logísticas con datos país-año para anticipar guerras civiles (Goldstone et al., 2010). Aquellos modelos fueron pioneros, pero enfrentaron el problema de desbalance de muestra: la mayoría de naciones no entra en guerra cada año. Con información subnacional, Ward et al. (2013) y Hegre, Hultman y Nygård (2019) mejoraron un poco la precisión al usar datos mensuales, aunque advirtieron que casi toda la capacidad predictiva venía de la inercia histórico-espacial.
+\\\\
+En Colombia, Bazzi, Blattman y Dercon (2019) compararon Lasso, bosques aleatorios, gradiente impulsado y redes neuronales con paneles municipales. Los modelos localizaron bien focos crónicos de violencia, pero fallaron al anticipar estallidos en municipios antes pacíficos. Radford (2022), usando una red ConvLSTM, halló que el aprendizaje profundo baja el error medio pero no reduce las “sorpresas” cuando la violencia cambia de patrón. En suma, los modelos basados solo en datos pasados tienden a predecir continuidad.
+\\\\
+Para manejar este sesgo, trabajos recientes han diseñado estrategias para el fuerte desbalance de clases que caracteriza a los eventos atípicos. El sistema ViEWS, por ejemplo, añadió el conteo de protestas locales a sus modelos de conflicto en África y así mejoró la detección de focos nuevos (Rød, Hegre, & Leis, 2023). Rojas y Grautoff (2023) usaron bosques aleatorios para pronosticar masacres; equilibraron la muestra con over-/undersampling y lograron un AUC de 0,88, aunque con más falsos positivos que la regresión logística. D’Orazio (2023) aplicó AutoML y, además de la predicción, reportó intervalos de probabilidad para ayudar a tomar decisiones bajo incertidumbre.
+\\\\
+En el ámbito urbano, Mohler et al. (2011) en Los Ángeles y Barreras et al. (2016) en Bogotá modelaron delitos como “procesos auto-excitantes”, donde un hecho violento aumenta la probabilidad de otro cercano. Estos modelos predicen bien zonas calientes habituales, pero no están diseñados para detectar estallidos inusuales.
+\\\\
+El presente estudio atiende la brecha señalada por Bazzi et al. (2019) y Radford (2022). En lugar de explicar promedios históricos, se centra en eventos atípicos medidos con tres índices de violencia (IACV, IA e IGC) para 1 102 municipios entre 1997 y 2024. A diferencia de Rojas y Grautoff (2023), que se enfocan en el AUC, aquí se comparan Lasso y bosques aleatorios con validación cruzada y varias métricas a la vez (AUC = 0,90; precisión global = 0,85; falsos positivos = 0,01). El resultado muestra que es posible bajar de forma notable las falsas alarmas sin perder sensibilidad. Además, siguiendo la recomendación de D’Orazio (2023), las probabilidades generadas se integran al protocolo operativo del SAT, lo que demuestra viabilidad de uso institucional.
+\\\\
+El diseño del panel municipal reconoce que la historia de violencia es un predictor clave (Bazzi et al., 2019), adopta el rebalanceo de clases de Rojas y Grautoff (2023) y emplea la predicción probabilística sugerida por D’Orazio (2023). Así se da crédito explícito a las innovaciones previas.
+\\\\
+En resumen, la literatura muestra que los modelos tradicionales predicen bien la continuidad del conflicto, pero aún fallan frente a los brotes imprevistos. Este trabajo avanza en la frontera al buscar mejorar la predicción de estos eventos atípicos, reducir de forma considerable los falsos positivos y al insertar el modelo directamente en el SAT, evidenciando que el aprendizaje automático, combinado con información cualitativa y métricas adecuadas, puede mejorar la prioridad territorial de las alertas tempranas en contextos de conflicto armado.
+
+
+\section{Definciones}
+
+Para evaluar el riesgo de violencia asociada al conflicto armado se construyen tres índices que resumen distintos aspectos del fenómeno.  
+
+\subsection*{Índices de violencia}
+
+El {Índice Agregado de Criminalidad y Violencia (IACV)} combina homicidio, extorsión, secuestro, terrorismo y masacres para cada municipio y trimestre.  
+Cada delito se pondera con la pena promedio establecida en el Código Penal (Ley 599 de 2000), de modo que la gravedad legal determine el peso relativo.  
+
+        \begin{tabular}{lcc}
+            \toprule
+            \textbf{Delito} & \textbf{Pena (años)} & \textbf{Peso (\%)} \\
+            \midrule
+            Homicidio & 19.0 & 17.04 \\
+            Extorsión & 11.5 & 10.31 \\
+            Secuestro & 16.0 & 14.35 \\
+            Terrorismo & 15.0 & 13.45 \\
+            Masacres & 50.0 & 44.84 \\
+            \midrule
+            \caption{Ponderaciones del IACV según la pena media de cada delito.}
+            \bottomrule
+        \end{tabular}
+\\\\
+Formalmente, el IACV para el municipio m en el trimestre $t$ se calcula como
+
+\[
+IACV_{t,m} \;=\;
+\frac{0.17\,\text{Hom}_{t,m} + 0.10\,\text{Ext}_{t,m} + 0.14\,\text{Sec}_{t,m} + 0.13\,\text{Terr}_{t,m} + 0.44\,\text{Masc}_{t,m}}
+{\text{Población}_{t,m}}
+\]
+\\
+El {Índice de Amedrentamiento (IA)} mide hechos que generan miedo o intimidación —amenazas, tentativas de asesinato, atentados, desplazamiento forzado y hostigamiento— cuyo impacto principal es psicológico y social.
+\\\\
+El {Índice de Gobernanza Criminal (IGC)} captura la capacidad de grupos armados ilegales para imponer reglas y restringir la actividad civil mediante confinamientos, retenes ilegales, paros armados y extorsiones.
+
+\subsection*{Definición de violencia atípica}
+
+Siguiendo a Bazzi et al. (2019), se define la {violencia atípica} como un nivel que excede el promedio y una desviación estándar del propio municipio en los doce trimestres previos:
+
+\[
+\text{ViolenciaAtípica}_{t,m} =
+\begin{cases}
+1 & \text{si } IACV_{t,m} \ge \bar{IACV}_{t-1:t-12,m} + \sigma_{t-1:t-12,m},\\
+0 & \text{en otro caso}.
+\end{cases}
+\]
+\\\\
+Este umbral convierte la serie continua en una variable binaria que marca trimestres con picos inusuales de violencia. Dichos eventos son poco frecuentes, lo que reproduce el desbalance propio de los fenómenos que el SAT necesita anticipar y constituye la variable objetivo de los modelos predictivos.

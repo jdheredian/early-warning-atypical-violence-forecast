@@ -1,0 +1,118 @@
+\subsection*{Aprendizaje Automático}
+El propósito es estimar, para cada municipio \(m\) y trimestre \(t\), la probabilidad de que ocurra un evento de {violencia atípica}. Formalmente se busca la función
+\[
+\widehat{P}\bigl(\text{ViolenciaAtípica}_{t,m}=1 \mid \mathbf{X}_{t,m}\bigr),
+\]
+donde \(\mathbf{X}_{t,m}\) agrupa predictores estructurales y rezagos de violencia.
+
+\subsection*{Clasificación versus regresión}
+
+Se emplea un enfoque de clasificación binaria porque la variable dependiente toma solo dos valores (violencia atípica: sí o no). Los clasificadores permiten estimar probabilidades que se interpretan como riesgos y facilitan la fijación de umbrales operativos. Estos umbrales, a su vez, pueden ajustarse para privilegiar la sensibilidad o la precisión de acuerdo con la capacidad institucional. Además, los resultados son fácilmente integrables en esquemas de priorización de alertas tempranas.
+
+\subsection*{Especificación del modelo}
+
+La probabilidad se representa de forma general como
+\[
+\text{ViolenciaAtípica}_{t,m}
+= f\!\bigl(IACV_{t-1:t-12,m},\, IGC_{t-1:t-4,m},\, IA_{t-1:t-4,m},\, \mathbf{S}_{t,m}\bigr),
+\]
+donde la función \(f(\cdot)\) se aproxima con dos algoritmos de aprendizaje automático. 
+\subsection*{Modelos a utilizar}
+
+El primero es Lasso, una regresión logística con penalización \(L_1\) que selecciona de manera automática los predictores lineales más relevantes (Tibshirani, 1996). Esto modelos lineales mejoran la interpretabilidad del modelo. Así, Lasso simplifica la selección de variables sin comprometer la precisión de las predicciones. Además, es útil para datos con alta dimensionalidad, evitando el sobreajuste mediante la regularización de los coeficientes. Sin embargo, su principal limitación es que sólo captura relaciones lineales entre las variables, lo que podría afectar su desempeño en la predicción de eventos atípicos si existen interacciones no lineales complejas. También requiere una adecuada calibración de sus hiperparámetros, lo que aumenta el costo computacional del entrenamiento.
+\\\\
+Bosques Aleatorios, propuesto por Breiman (2001), es un modelo basado en la combinación de múltiples {árboles de decisión}, lo que mejora la robustez y precisión del modelo en comparación con un árbol único.
+\\\\
+Así, es capaz de manejar datos con relaciones no lineales y capturar interacciones complejas entre variables. Además, es resistente al ruido y a la presencia de valores faltantes. Sin embargo, su desventaja principal es la falta de interpretabilidad, ya que la combinación de múltiples árboles dificulta la explicación del proceso de toma de decisiones del modelo. Además, puede ser computacionalmente costoso en grandes volúmenes de datos.
+
+\subsection*{Procedimiento de estimación}
+
+La base de datos se divide en cinco pliegues y se realiza validación cruzada temporal. Dada la naturaleza atípica de estos eventos de violencia, el desbalance se corrige mediante sobremuestreo de la clase minoritaria en el conjunto de entrenamiento. Los hiperparámetros de cada algoritmo se ajustan con validación cruzada, optimizando el F1\-Score. Para evaluar el desempeño se reportan AUC, precisión global, sensibilidad, precisión y tasa de falsos positivos.
+\\\\
+La probabilidad estimada \(\widehat{P}\bigl(\text{ViolenciaAtípica}_{t,m}=1\bigr)\) se incorpora como puntaje de riesgo en el protocolo del SAT. Los umbrales de decisión se ajustan según las prioridades de política: reducir falsos negativos cuando se teme subestimar eventos críticos o reducir falsos positivos para evitar alertas innecesarias que puedan sobrecargar la capacidad de intervención.
+
+\subsubsection*{Comparación de Modelos y Evaluación de Desempeño}
+
+En el campo del {aprendizaje automático}, es común comparar múltiples modelos para seleccionar el más adecuado según el problema específico. Cada metodología mencionada tiene fortalezas y debilidades, por lo que su desempeño se evaluará utilizando métricas estándar como {precisión, sensibilidad, F1\-Score y AUC}.
+\\\\
+Para evaluar el desempeño de los modelos en este estudio, se emplearán las siguientes métricas: precisión, sensibilidad, F1\-Score y AUC.
+\\\\
+\textbf{Precisión: Fiabilidad en la Identificación de Eventos Atípicos}
+\\\\
+La precisión mide qué proporción de las predicciones positivas realmente corresponden a eventos violentos atípicos. Matemáticamente, se expresa como:
+
+\begin{equation}
+\text{Precisión} = \frac{\text{Verdaderos Positivos}}{\text{Verdaderos Positivos} + \text{Falsos Positivos}}
+\end{equation}
+
+Desde una perspectiva operativa, una alta precisión significa que el modelo comete pocos errores al identificar eventos atípicos, minimizando el número de falsas alarmas. Esto es fundamental para evitar la sobrecarga de recursos de seguridad, asegurando que los esfuerzos preventivos se concentren en situaciones de riesgo real.
+\\\\
+\textbf{Sensibilidad: Capacidad de Detectar Eventos Atípicos Reales}
+\\\\
+La sensibilidad, por otro lado, mide qué proporción de los eventos atípicos reales son correctamente detectados por el modelo. Se define como:
+
+\begin{equation}
+\text{Sensibilidad} = \frac{\text{Verdaderos Positivos}}{\text{Verdaderos Positivos} + \text{Falsos Negativos}}
+\end{equation}
+
+Una alta sensibilidad es prioritaria en contextos donde el costo de no identificar un evento crítico es mayor que el de generar una falsa alarma. En el caso de la violencia, no detectar un evento atípico a tiempo puede traducirse en pérdida de vidas humanas y en la incapacidad del sistema de alertas para reaccionar adecuadamente ante situaciones de emergencia.
+\\\\
+\textbf{F1-Score: Equilibrio entre Precisión y Sensibilidad}
+\\\\
+Dado que existe una disyuntiva entre precisión y sensibilidad, se empleará el F1-Score como métrica de referencia para evaluar el desempeño global del modelo. El F1-Score es la media armónica entre precisión y sensibilidad, proporcionando un balance entre ambos aspectos. Su fórmula es la siguiente:
+
+\begin{equation}
+F1 = 2 \times \frac{\text{Precisión} \times \text{Sensibilidad}}{\text{Precisión} + \text{Sensibilidad}}
+\end{equation}
+
+Un F1-Score alto indica que el modelo es capaz de detectar la mayoría de los eventos violentos atípicos sin generar un número excesivo de falsas alarmas. En el contexto del presente estudio, esta métrica es clave, ya que permite evaluar si el uso de aprendizaje de máquinas mejora la capacidad predictiva respecto a los métodos tradicionales de alertas tempranas.
+\\\\
+Además, el uso del F1-Score ayuda a equilibrar dos aspectos fundamentales: la eficiencia en la asignación de recursos y la necesidad de priorizar la protección de la población ante posibles episodios de violencia extrema.
+\\\\
+\textbf{Área bajo la curva ROC (AUC): capacidad de discriminación independiente del umbral}
+\\\\
+Esta métrica resume, en un único valor, todas las combinaciones posibles de sensibilidad y tasa de falsos positivos que se obtienen al variar el umbral de clasificación. Al integrar la curva Receiver Operating Characteristic (ROC),
+\[
+\text{AUC} \;=\; \int_{0}^{1} \!\text{Sensibilidad}(\,\text{Precisión}\,)\;d(\text{Precisión}),
+\]
+se mide la probabilidad de que el modelo asigne una puntuación de riesgo más alta a un municipio con violencia atípica que a uno sin ella. Por no depender de un umbral específico, la AUC permite comparar modelos en términos de su capacidad inherente para ordenar los casos según su probabilidad subyacente de un evento crítico. En contextos con fuerte desbalance de clases, como el presente, esta característica resulta valiosa porque evita ajustes arbitrarios y se centra en la calidad de la discriminación estadística. Una AUC cercana a 1 indica que el algoritmo clasifica correctamente la mayoría de los pares municipio‐trimestre, mientras que un valor próximo a 0,5 sugiere desempeño no mejor que el azar.
+\\\\
+En el marco del SAT, la AUC facilita priorizar intervenciones al ofrecer un ranking robusto de municipios según su riesgo estimado, sin necesidad de fijar de antemano el punto de corte que activaría una alerta.
+
+\section{Resultados preliminares}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrr}
+\toprule
+ & \textbf{Lasso} & \textbf{Bosques Aleatorios} \\
+\midrule
+AUC             & 0.811 & 0.898 \\
+Sensibilidad    & 0.743 & 0.604 \\
+Precisión   & 0.707 & 0.997 \\
+Precisión global & 0.720 & 0.854 \\
+Relación FP/TP  & 0.687 & 0.009 \\
+Relación FN/TP  & 0.345 & 0.656 \\
+\bottomrule
+\end{tabular}
+\caption{Desempeño comparado de los modelos (validación cruzada temporal).}
+\label{tab:model_comparison}
+\end{table}
+
+La Tabla~\ref{tab:model_comparison} presenta los indicadores de desempeño para los dos algoritmos estimados. El modelo Lasso arroja un área bajo la curva ROC (AUC) de 0.81 y combina una sensibilidad de 0.74 con una precisión de 0.71, lo que se traduce en una precisión global de 0.72. Estos valores sugieren que, bajo relaciones lineales, el conjunto de predictores históricos y estructurales ofrece una capacidad moderada para identificar brotes de violencia atípica.
+\\\\
+El {Bosques Aleatorios}, por su parte, eleva la AUC a 0.90 y la precisión global a 0.85. La precisión alcanza 0.997, lo cual reduce de forma drástica la proporción de falsas alarmas (FP/TP = 0.009). Sin embargo, la sensibilidad desciende a 0.60 y, en consecuencia, la relación de falsos negativos aumenta. En términos operativos, el modelo basado en árboles discrimina mejor los municipios verdaderamente críticos, aunque pasa por alto algunos eventos menos evidentes.
+\\\\
+La ganancia en precisión refleja la capacidad del {Bosques Aleatorios} para capturar interacciones no lineales entre los índices de violencia, los factores estructurales y la dinámica reciente del conflicto. La menor sensibilidad sugiere que, si la prioridad institucional es evitar omisiones, podría ser necesario ajustar el umbral de decisión o incorporar técnicas complementarias que eleven la detección de casos positivos.
+\\\\
+En síntesis, los resultados preliminares indican que el {Bosques Aleatorios} supera al Lasso en la mayoría de las métricas relevantes, especialmente en la reducción de alertas erróneas. Esta mejora ofrece un argumento sólido para integrar el puntaje de riesgo del modelo en el protocolo del SAT, siempre que se calibren los umbrales de alerta de acuerdo con los objetivos de política pública y la capacidad de respuesta disponible.
+
+\section{Conclusiones y líneas de trabajo futuro}
+
+La evidencia preliminar muestra que los modelos de aprendizaje automático pueden complementar el {Sistema de Alertas Tempranas} (SAT) al estimar con mayor precisión la probabilidad de violencia atípica a nivel municipal. Entre los dos algoritmos evaluados, el {Bosques Aleatorios} destaca por un área bajo la curva ROC de 0.90 y una reducción de 98\,\% en la proporción de falsas alarmas respecto al Lasso. Estos resultados sugieren que estimaciones no lineales y pronósticos permiten identificar con mayor certeza los municipios más expuestos a eventos atípicos, lo cual puede optimizar la asignación de recursos preventivos.
+\\\\
+Al mismo tiempo, la menor sensibilidad del {Bosques Aleatorios} advierte sobre el riesgo de omitir algunos eventos. Otro desafío consiste en traducir las probabilidades en protocolos claros para el personal del SAT, de modo que la información sea accionable y se evite la sobrecarga de alertas.
+\\\\
+Las líneas de trabajo futuro se orientan en tres direcciones. En primer lugar, se planea evaluar algoritmos adicionales como XGBoost y LSTM para contrastar la robustez de los hallazgos y, en particular, mejorar la sensibilidad sin sacrificar especificidad. En segundo lugar, se propone incorporar fuentes de datos textuales, provenientes de los informes del SAT, para poder complmentar las señales tempranas sobre tensiones locales. 
+\\\\
+Finalmente, este estudio aporta un marco reproducible que combina aprendizaje automático y análisis cualitativo para fortalecer las alertas tempranas de violencia; las extensiones previstas buscan consolidar su utilidad práctica y ampliar la capacidad de la Defensoría del Pueblo para proteger a las poblaciones en riesgo.

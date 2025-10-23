@@ -1,0 +1,7 @@
+\babel@toc {spanish}{}\relax 
+\beamer@sectionintoc {1}{Objetivo de estudio}{2}{0}{1}
+\beamer@sectionintoc {2}{Motivación}{5}{0}{2}
+\beamer@sectionintoc {3}{Resultados preliminares}{9}{0}{3}
+\beamer@sectionintoc {4}{Revisión de literatura}{11}{0}{4}
+\beamer@sectionintoc {5}{Definiciones}{14}{0}{5}
+\beamer@sectionintoc {6}{Datos}{19}{0}{6}

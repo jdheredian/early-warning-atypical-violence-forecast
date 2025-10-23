@@ -1,0 +1,11 @@
+\subsection*{Definición de Violencia Atípica y Umbrales Estadísticos}
+
+En este estudio, la violencia atípica se define mediante umbrales estadísticos que distinguen entre la variabilidad normal de los indicadores de violencia y aquellos eventos que se consideran fuera de lo esperado. Para ello, se utiliza la desviación estándar como criterio para establecer puntos de corte en el índice de violencia, lo que permite una segmentación cuantitativa y evita criterios subjetivos.
+
+Los eventos que se encuentran cerca de la media (dentro de $\pm1\sigma$) se consideran normales y no alteran significativamente la dinámica de seguridad. En cambio, aquellos que superan los umbrales de >se clasifican como atípicos, siendo estos el foco del presente estudio por su impacto en la seguridad y la necesidad de herramientas predictivas que los identifiquen con mayor precisión.
+
+Matemáticamente, los umbrales se calculan a partir de la media $\bar{X}$ y la desviación estándar $\sigma$ del índice de violencia $X$ correspondiente a los últimos tres años, y se definen como $>\bar{X} + 1\sigma$.
+
+Dado que el objetivo es identificar eventos atípicos y no predecir valores continuos, se emplean modelos de clasificación. Estos modelos permiten evaluar la capacidad de detección mediante métricas como la precisión, la sensibilidad y el F1-Score. A diferencia de un modelo de regresión, que estima un valor numérico exacto, la clasificación diferencia claramente entre eventos normales (0) y atípicos (1), facilitando la toma de decisiones en sistemas de alerta temprana.
+
+Además, los modelos de clasificación son adecuados para sistemas que requieren decisiones binarias, como la emisión de alertas. Una predicción positiva activaría protocolos de seguridad, mientras que una negativa indicaría la ausencia de amenaza inminente. Este enfoque simplifica la interpretación de los resultados y permite estructurar respuestas más eficientes en comparación con los modelos continuos.

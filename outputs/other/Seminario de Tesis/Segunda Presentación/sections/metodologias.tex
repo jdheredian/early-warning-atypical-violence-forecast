@@ -1,0 +1,104 @@
+\begin{frame}{Metodología}
+    \small
+    \begin{block}{Objetivo del modelo}
+        Predecir la \textbf{probabilidad de que ocurra un evento de violencia atípica} en un municipio en un trimestre determinado.
+    \end{block}
+
+    \begin{block}{¿Por qué clasificación y no regresión?}
+        \begin{itemize}
+            \item El interés está en una variable binaria: violencia atípica (sí/no).
+            \item La clasificación permite estimar \textbf{probabilidades asociadas a riesgo}.
+            \item Los modelos pueden ser \textbf{ajustados (fine-tuned)} para priorizar sensibilidad o precisión.
+            \item Fáciles de integrar a esquemas de priorización o alertas.
+        \end{itemize}
+    \end{block}
+
+\end{frame}
+
+\begin{frame}{Estimación}
+    \begin{alertblock}{Estimar \( P(\text{Violencia Atípica}_{t}=1|\vec{X}) \)}
+        \[
+    \text{ViolenciaAtípica}_{t,m} = f\left(
+        \text{IACV}_{t-1:12,m},\ 
+        \text{IGC}_{t-1:4,m},\ 
+        \text{IA}_{t-1:4,m},\ 
+        X_{t,m},
+    \right)
+    \]
+    \end{alertblock}
+
+    \begin{itemize}
+        \item \textbf{Variables explicativas}:
+
+        \begin{itemize}
+            \item \alert{Factores estructurales}:
+            \begin{itemize}
+                \footnotesize
+                \item Desigualdad, presencia estatal, economías ilegales, empleo, presencia grupos armados, educación, ubicación, etc.
+                \item Si tiene o no cultivos de coca en el periodo pasado
+                \item Si tiene o no prescencia de un grupo criminal en el periodo pasado
+            \end{itemize}
+
+            \item \alert{Rezagos temporales de violencia}:
+            \begin{itemize}
+                \footnotesize
+                \item IACV, IGC e IA
+            \end{itemize}
+        
+        \end{itemize}
+        \end{itemize}
+\end{frame}
+
+\begin{frame}{Lasso}
+\begin{block}{\textbf{Descripción}}
+    \small
+            \begin{itemize}
+            \item Modelo lineal penalizado que selecciona automáticamente las variables más relevantes.
+            \item Supone que \textbf{cada variable influye de forma constante y predecible} sobre el riesgo de violencia atípica: si una variable aumenta, el riesgo cambia proporcionalmente.
+            \item Favorece interpretabilidad y evita sobreajuste.
+        \end{itemize}
+\end{block}
+    
+    \begin{alertblock}
+    \small
+    \begin{table}[h!]
+    \centering
+    \begin{tabular}{lcccccc}
+        \toprule
+        \% Acierto & \% Sensibilidad & \% Especificidad & AUC &  F1 \\
+        \midrule
+         72 & 74.3 & 70.7 & 0.811 &  0.660 \\
+        \bottomrule
+    \end{tabular}
+    \end{table}
+
+    \end{alertblock}
+\end{frame}
+
+
+
+
+\begin{frame}{Random Forest}
+    \small
+    \begin{block}{\textbf{Descripción}}
+        \begin{itemize}
+            \item Conjunto de árboles de decisión entrenados sobre muestras aleatorias.
+            \item Captura relaciones \textbf{no lineales} y \textbf{interacciones complejas} entre variables.
+            \item No requiere supuestos paramétricos fuertes.
+
+        \end{itemize}
+    \end{block}
+    \begin{alertblock}
+    \small
+    \begin{table}[h!]
+    \centering
+    \begin{tabular}{lcccccc}
+        \toprule
+        \% Acierto & \% Sensibilidad & \% Especificidad & AUC & F1 \\
+        \midrule
+         85.4 & 60.4 & 99.7 & 0.898 & 0.750 \\
+        \bottomrule
+    \end{tabular}
+    \end{table}
+    \end{alertblock}
+\end{frame}

@@ -1,0 +1,96 @@
+\makesection{Definiciones}
+
+\begin{frame}{Violencia agregada: el índice IACV}
+    \small
+    \begin{block}{¿Qué es el IACV?}
+        El \textbf{Índice Agregado de Casos Violentos (IACV)} resume la intensidad de violencia a nivel municipal por trimestre.\\ \alert{Propósito}: Medida de seguridad pública agregada
+    \end{block}
+
+
+        \centering
+        \begin{tabular}{lcc}
+            \toprule
+            \textbf{Delito} & \textbf{Pena (años)} & \textbf{Peso (\%)} \\
+            \midrule
+            Homicidio & 19.0 & 17.04 \\
+            Extorsión & 11.5 & 10.31 \\
+            Secuestro & 16.0 & 14.35 \\
+            Terrorismo & 15.0 & 13.45 \\
+            Masacres & 50.0 & 44.84 \\
+            \midrule
+            
+            \bottomrule
+        \end{tabular}
+
+
+\end{frame}
+
+
+\begin{frame}{Fórmula del IACV}
+    \small
+    \begin{alertblock}{Definición}
+        \[
+        IACV_{t,m} = \frac{0.17 \cdot \text{Hom}_{t,m} + 0.10 \cdot \text{Ext}_{t,m} + 0.14 \cdot \text{Sec}_{t,m} + 0.13 \cdot \text{Terr}_{t,m} + 0.44 \cdot \text{Masc}_{t,m}}{\text{Población}_{t,m}}
+        \]
+    \end{alertblock}
+
+    \begin{block}{Ponderaciones}
+        \begin{itemize}
+            \item Reflejan el impacto social relativo de cada tipo de hecho.
+
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{¿Qué otros tipos de violencia definimos?}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Índice de Amedrentamiento (IA)}
+                \begin{itemize}
+                        \item Amenazas
+                        \item Tentativas de asesinato y atentados
+                        \item Desplazamiento forzado
+                        \item Hostigamiento
+
+                \end{itemize}
+                \alert{Propósito}: Medir clima de miedo
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Índice de Gobernanza Criminal (IGC)}
+
+                    \begin{itemize}
+                        \item Confinamientos
+                        \item Retenes ilegales
+                        \item Paros armados
+                        \item Extorsión
+                    \end{itemize}
+                    \alert{Propósito}: Medir control territorial
+
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{¿Qué es la violencia atípica?}
+    \small
+    \begin{block}{Inspirado en Bazzi et al. (2022)}
+        Se define como un \textbf{nivel de violencia que supera el umbral promedio más una desviación estándar}, con respecto a su historial reciente.
+    \end{block}
+
+    \begin{block}{Criterio formal}
+        \[
+        \text{Violencia Atípica}_{t} = 
+        \begin{cases}
+            1 & \text{si } IACV_t \geq \bar{IACV}_{t-1:t-12} + \sigma_{t-1:t-12} \\
+            0 & \text{en otro caso}
+        \end{cases}
+        \]
+    \end{block}
+
+    \begin{itemize}
+        \item Detecta picos inusuales a partir de \textbf{comportamientos históricos del municipio}.
+        \item Sirve como variable objetivo para los modelos de predicción.
+    \end{itemize}
+\end{frame}

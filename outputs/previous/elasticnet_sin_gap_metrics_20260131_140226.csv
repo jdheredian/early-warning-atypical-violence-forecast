@@ -1,0 +1,2 @@
+Experimento,Timestamp,Threshold,AUPRC,AUROC,Balanced_Accuracy,F1_Score,Cohen_Kappa,Mejores_Params,Features_Seleccionadas,Total_Features,Train_Size,Val_Size,Test_Size,Train_Prevalence,Val_Prevalence,Test_Prevalence
+elasticnet_sin_gap,20260131_140226,0.5000000000000001,0.28677359508067657,0.6328310498369863,0.5961662522460537,0.37800171526586623,0.11641135997374241,"{'C': 0.001, 'l1_ratio': 0.1}",41,54,52643,11210,12331,0.18260737419979864,0.19330954504906334,0.20193009488281566

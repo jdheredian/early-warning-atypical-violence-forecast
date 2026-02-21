@@ -1,0 +1,2 @@
+Experimento,Timestamp,AUPRC,AUROC,Balanced_Accuracy,F1_Score,Precision,Recall,Cohen_Kappa,Threshold,n_features,train_size,val_size,test_size,train_prev,val_prev,test_prev,best_C,best_l1_ratio,cv_scoring,target_col
+elasticnet_iacv,20260219_061231,0.3016586481415462,0.6545969965354024,0.6004367344947055,0.38918372504422544,0.253539677313138,0.8369565217391305,0.10837254592883916,0.5000000000000001,137,17936,4484,4484,0.19301962533452274,0.20517395182872436,0.20517395182872436,0.01,0.7,f1,atypical_violence_iacv

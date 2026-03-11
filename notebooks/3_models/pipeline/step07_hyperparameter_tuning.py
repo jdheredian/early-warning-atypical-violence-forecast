@@ -19,6 +19,7 @@ def tune_hyperparameters(
     n_cv_splits=5,
     scoring='f1',
     random_state=42,
+    class_weight='balanced',
 ):
     """
     Ajusta un Elastic Net con búsqueda de grilla y validación cruzada temporal.
@@ -36,6 +37,11 @@ def tune_hyperparameters(
         Métrica de optimización: 'f1', 'average_precision', 'roc_auc', etc.
     random_state : int
 
+    class_weight : str or dict or None
+        Peso de clases para LogisticRegression.
+        'balanced' ajusta pesos inversamente proporcional a frecuencias.
+        None desactiva el ajuste de pesos (usar cuando se aplica undersampling).
+
     Retorna
     -------
     best_model : LogisticRegression
@@ -47,14 +53,16 @@ def tune_hyperparameters(
     n_combos = len(param_grid['C']) * len(param_grid['l1_ratio'])
     print(f"GridSearchCV: {n_combos} combinaciones × {n_cv_splits} folds | métrica: {scoring}")
 
+    print(f"  class_weight: {class_weight}")
+
     model = LogisticRegression(
         penalty='elasticnet',
         solver='saga',
         max_iter=10000,
-        class_weight='balanced',
+        class_weight=class_weight,
         random_state=random_state,
         n_jobs=-1,
-        tol=1e-4, 
+        tol=1e-4,
     )
 
     gs = GridSearchCV(

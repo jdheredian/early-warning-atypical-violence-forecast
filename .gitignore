@@ -196,3 +196,7 @@ Icon?
 .RData
 .Rproj.user
 *.Rproj
+
+.claude/
+.vscode/
+tools/
